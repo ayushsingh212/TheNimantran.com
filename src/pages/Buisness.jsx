@@ -1,22 +1,16 @@
 import React, { useState } from 'react';
-
+import dummyCards from "../Data.jsx"
 const Business = () => {
   const [isWholesaler, setIsWholesaler] = useState(true); // change to true to simulate already registered
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  const categories = ['All', 'Wedding', 'Birthday', 'Baby Shower', 'Business Inauguration'];
+  const categories = ['All', 'wedding', 'birthday', 'baby-shower', 'business-inauguration'];
 
-  const rawCards = [
-    { id: 1, title: "Raw Wedding Card A", category: "Wedding", price: 15, image: "/raw1.jpg" },
-    { id: 2, title: "Raw Birthday Card", category: "Birthday", price: 10, image: "/raw2.jpg" },
-    { id: 3, title: "Raw Baby Shower Card", category: "Baby Shower", price: 12, image: "/raw3.jpg" },
-    { id: 4, title: "Raw Wedding Card B", category: "Wedding", price: 14, image: "/raw4.jpg" },
-    // ... add more
-  ];
+ 
 
   const filteredCards = selectedCategory === 'All' 
-    ? rawCards 
-    : rawCards.filter(card => card.category === selectedCategory);
+    ? dummyCards 
+    : dummyCards.filter(card => card.category === selectedCategory);
 
   return (
     <div className="min-h-screen px-6 md:px-20 py-10 bg-[#f9f1e7]">
@@ -42,7 +36,7 @@ const Business = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredCards.map(card => (
               <div key={card.id} className="bg-white rounded-xl shadow p-4 text-center">
-                <img src={card.image} alt={card.title} className="rounded-lg h-40 object-cover mx-auto" />
+                <img src={card.images.front} alt={card.title} className="rounded-lg h-40 object-cover mx-auto" />
                 <h3 className="mt-4 text-lg font-semibold">{card.title}</h3>
                 <p className="text-sm text-gray-600">₹{card.price} per unit</p>
                 <button className="mt-3 bg-primary text-white px-4 py-1 rounded hover:scale-105 transition-transform">
