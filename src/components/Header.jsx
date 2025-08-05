@@ -85,7 +85,7 @@ function Header() {
             {menuOpen ? <FaTimes /> : <FaBars />}
           </button>
           <Link to="/" className="flex items-center space-x-2">
-            <img src="/name.png" alt="Nimantran Logo" className="h-10 w-auto object-contain" />
+            <img src="./name.png" alt="Nimantran Logo" className="h-10 w-auto object-contain" />
           </Link>
 
 
