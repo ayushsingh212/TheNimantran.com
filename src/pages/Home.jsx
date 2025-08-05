@@ -6,7 +6,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import PopularCards from "../components/PopularCards";
 import CardPage from "./CardPage";
-// Cards Import
+
 import weddingImg from "../assets/wedding.png";
 import businessImg from "../assets/wedding.png";
 import birthdayImg from "../assets/wedding.png";
@@ -20,14 +20,13 @@ import WhyChooseUs from "../components/WhyChooseUs";
 import WelcomeBanner from "../components/WelcomeBanner";
 import TrendingCards from "../components/TrendingCards";
 
-// Carousel responsiveness config
 const responsive = {
   desktop: { breakpoint: { max: 3000, min: 1024 }, items: 1 },
   tablet: { breakpoint: { max: 1024, min: 464 }, items: 1 },
   mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
 };
 
-// Carousel image data
+
 const images = [
   {
     id: 1,
@@ -91,7 +90,7 @@ function Home() {
      
 
 
-      {/* Category Cards */}
+    
 
 <section className="px-4 md:px-20 py-10 bg-background">
   <h2 className="text-3xl font-bold text-center mb-8 text-heading">Our Categories</h2>
@@ -129,7 +128,7 @@ function Home() {
 
 
 
-      {/* Services & Why Choose Us */}
+      
       <OurServices />
       <WhyChooseUs />
     </div>
