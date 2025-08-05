@@ -5,15 +5,22 @@ import CartContext from "../context/CartContext";
 const Card = ({ card }) => {
   const navigate = useNavigate();
 
-  const handleCardClick = () => {
-    navigate(`/card/${card._id}`);
-  };
-  const {addToCart,addedItemId,handleAddToCart,handleBuyNow} = useContext(CartContext)
+//  const handleCardClick = () => {
+//   navigate(`/card/${card._id}`);
+//   setTimeout(() => {
+//     window.scrollTo({ top: 0 });
+//   }, 0);
+// };
+
+
+  const {addToCart,addedItemId,handleAddToCart,handleBuyNow,handleCardClick} = useContext(CartContext)
  
 
   return (
    <div
-  onClick={handleCardClick}
+  onClick={()=>{
+    handleCardClick(card,navigate)
+  }}
   className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden flex flex-col cursor-pointer w-full max-w-[250px]"
 >
   <img

@@ -4,7 +4,7 @@ import WholesalerDashboard from '../components/dashboard/WholesalerDashboard';
 import { AuthContext } from '../context/AuthContext';
 
 const Dashboard = () => {
-  const { user } = useContext(AuthContext); // should have `user.role` like 'regular' or 'wholesaler'
+  const { user } = useContext(AuthContext); 
 
   if (!user) return <div>Loading...</div>;
 

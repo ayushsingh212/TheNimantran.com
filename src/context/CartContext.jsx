@@ -16,7 +16,12 @@ export const CartProvider = ({ children }) => {
   });
   
   const [addedItemId, setAddedItemId] = useState(null);
-
+ const handleCardClick = (card,navigate) => {
+  navigate(`/card/${card._id}`);
+  setTimeout(() => {
+    window.scrollTo({ top: 0 });
+  }, 0);
+};
   // Save cartItems to localStorage whenever they change
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -40,11 +45,13 @@ export const CartProvider = ({ children }) => {
     setTimeout(() => setAddedItemId(null), 1000);
   };
 
-  const removeFromCart = (id) => {
+  const removeFromCart = (id,e) => {
+    e.stopPropagation()
     setCartItems((prev) => prev.filter((i) => i._id !== id));
   };
 
-  const updateQuantity = (id, qty) => {
+  const updateQuantity = (id, qty,e) => {
+    e.stopPropagation()
     setCartItems((prev) =>
       prev.map((i) =>
         i._id === id ? { ...i, quantity: Math.max(qty, 1) } : i
@@ -82,6 +89,7 @@ export const CartProvider = ({ children }) => {
         addedItemId,
         handleAddToCart,
         handleBuyNow,
+        handleCardClick
       }}
     >
       {children}

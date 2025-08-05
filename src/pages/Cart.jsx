@@ -1,8 +1,9 @@
 import { useCart } from "../context/CartContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Cart() {
-  const { cartItems, removeFromCart, updateQuantity, totalAmount } = useCart();
+  const navigate = useNavigate();
+  const { cartItems, removeFromCart, updateQuantity, totalAmount, handleCardClick } = useCart();
 
   if (cartItems.length === 0)
     return (
@@ -18,22 +19,54 @@ function Cart() {
       <h2 className="text-2xl font-bold mb-6">Your Cart</h2>
       <ul className="space-y-4">
         {cartItems.map((item) => (
-          <li key={item._id} className="flex items-center justify-between border-b pb-4">
+          <li
+            key={item._id}
+            className="flex items-center justify-between border-b pb-4"
+            onClick={() => handleCardClick(item, navigate)}
+          >
             <div className="flex items-center space-x-4">
-              <img src={item.images.front} alt={item.title} className="w-24 h-16 object-cover rounded" />
+              <img
+                src={item.images?.front || "/fallback.jpg"}
+                alt={item.title}
+                className="w-24 h-16 object-cover rounded"
+              />
               <div>
-                <h3 className="font-semibold">{item.title}</h3>
+                <h3 className="font-semibold truncate w-40">{item.title}</h3>
                 <p className="text-sm text-gray-600">₹{item.price} × {item.quantity}</p>
-                <div className="flex mt-2 space-x-2">
-                  <button onClick={() => updateQuantity(item._id, item.quantity - 1)} className="px-2 bg-gray-200 rounded">-</button>
+                <div className="flex mt-2 space-x-2 items-center">
+                  <button
+                    aria-label="Decrease quantity"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      item.quantity === 1
+                        ? removeFromCart(item._id, e)
+                        : updateQuantity(item._id, item.quantity - 1, e);
+                    }}
+                    className="px-2 bg-gray-200 rounded"
+                  >
+                    -
+                  </button>
                   <span>{item.quantity}</span>
-                  <button onClick={() => updateQuantity(item._id, item.quantity + 1)} className="px-2 bg-gray-200 rounded">+</button>
+                  <button
+                    aria-label="Increase quantity"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      updateQuantity(item._id, item.quantity + 1, e);
+                    }}
+                    className="px-2 bg-gray-200 rounded"
+                  >
+                    +
+                  </button>
                 </div>
               </div>
             </div>
             <button
-              onClick={() => removeFromCart(item._id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                removeFromCart(item._id, e);
+              }}
               className="text-red-600 hover:underline"
+              aria-label="Remove item"
             >
               Remove
             </button>
@@ -43,7 +76,10 @@ function Cart() {
 
       <div className="text-right mt-6">
         <p className="text-lg font-bold">Total: ₹{totalAmount}</p>
-        <Link to="/checkout" className="inline-block bg-pink-600 text-white px-6 py-2 mt-4 rounded hover:bg-pink-700">
+        <Link
+          to="/checkout"
+          className="inline-block bg-pink-600 text-white px-6 py-2 mt-4 rounded hover:bg-pink-700"
+        >
           Proceed to Pay
         </Link>
       </div>

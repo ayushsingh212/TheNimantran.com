@@ -1,11 +1,15 @@
 import { useParams,useNavigate } from "react-router-dom";
-import { useRef, useState ,useContext} from "react";
+import { useRef, useState ,useContext,useEffect} from "react";
 import {Link} from "react-router-dom"
 import dummyCards from "../Data.jsx"
 import CartContext from "../context/CartContext";
 
 const CardDetail = () => {
     const navigate = useNavigate();
+    useEffect(() => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}, []);
+
   const { id } = useParams();
   const {addToCart,addedItemId,handleAddToCart,handleBuyNow} = useContext(CartContext)
   const card = dummyCards.find((card) => card._id == id)|| {
@@ -108,7 +112,7 @@ const CardDetail = () => {
           />
         </div>
 
-        {/* Card Image */}
+        
         <div
           ref={imageRef}
           className="w-[300px] h-[400px] bg-white rounded-xl shadow-xl overflow-hidden transform transition duration-200 ease-in-out"
@@ -180,8 +184,8 @@ const CardDetail = () => {
         <p className="text-sm text-gray-700">↩️ {card.returnPolicy}</p>
 
         <div className="flex gap-4 mt-5">
-          <button className="bg-orange-500 text-white px-6 py-2 rounded-xl shadow hover:scale-105 transition">
-            Add to Cart
+          <button className={`${addedItemId ? 'bg-green-500':'bg-orange-500' } text-white px-6 py-2 rounded-xl shadow hover:scale-105 transition`} onClick={()=>{handleAddToCart(card)}}>
+          {   addedItemId ? "Added":" Add to Cart"  }  
           </button>
           <button className="bg-green-600 text-white px-6 py-2 rounded-xl shadow hover:scale-105 transition" onClick={(e)=>{handleBuyNow(card,e,navigate)}}>
             Buy Now
