@@ -21,6 +21,7 @@ import Buisness from "./pages/Buisness";
 import WholesalerDashboard from "./components/dashboard/WholesalerDashboard";
 import UserDashboard from "./components/dashboard/UserDashboard"
 import BuyNowPage from "./pages/BuyNowPage";
+import { LoadingProvider } from "./context/LoadingContext";
 
 
 
@@ -50,12 +51,13 @@ const router = createBrowserRouter(
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-
+ <LoadingProvider>
  <CartProvider>
   <AuthProvider>
 <RouterProvider router = {router } />
   </AuthProvider>
  </CartProvider>
+ </LoadingProvider>
 
 
 );

@@ -124,7 +124,7 @@ const dummyNormalUser = {
 
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(dummyNormalUser);
+  const [user, setUser] = useState(null);
   const [showLogin, setShowLogin] = useState({
     login: false,
     signup: false,

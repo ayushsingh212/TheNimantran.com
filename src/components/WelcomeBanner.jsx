@@ -3,15 +3,27 @@ import ReactDOM from "react-dom";
 
 const WelcomeBanner = () => {
   const [animateOut, setAnimateOut] = useState(false);
-  const [showBanner, setShowBanner] = useState(true);
+  const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
-    const timeout1 = setTimeout(() => setAnimateOut(true), 2000);
-    const timeout2 = setTimeout(() => setShowBanner(false), 2500);
-    return () => {
-      clearTimeout(timeout1);
-      clearTimeout(timeout2);
-    };
+    const hasVisited = localStorage.getItem("hasVisitedHome");
+    if (!hasVisited && window.location.pathname === "/") {
+    
+      window.addEventListener("load", () => {
+        setShowBanner(true);
+
+        const timeout1 = setTimeout(() => setAnimateOut(true), 2000);
+        const timeout2 = setTimeout(() => setShowBanner(false), 2500);
+
+        
+        localStorage.setItem("hasVisitedHome", "true");
+
+        return () => {
+          clearTimeout(timeout1);
+          clearTimeout(timeout2);
+        };
+      });
+    }
   }, []);
 
   if (!showBanner) return null;

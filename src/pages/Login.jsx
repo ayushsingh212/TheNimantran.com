@@ -1,22 +1,32 @@
 import { useState, useContext, useRef, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { useLoading } from "../context/LoadingContext"; // ✅ import global loader
 
 const Login = ({ onClose }) => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    emailOrPhone: "",
+    password: "",
+  });
 
+  const [error, setError] = useState("");
   const { setUser, setShowLogin } = useContext(AuthContext);
+  const { setLoading } = useLoading(); 
   const navigate = useNavigate();
   const modalRef = useRef(null);
 
-  const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true); 
 
     try {
       const res = await axios.post("/api/auth/login", formData, {
@@ -24,12 +34,17 @@ const Login = ({ onClose }) => {
       });
 
       if (res.data?.success) {
-        setUser(res.data.user);
+        setUser(res.data.data);
         setShowLogin({ login: false, signup: false });
-        navigate("/");
+
+        setTimeout(() => {
+          navigate("/");
+        }, 400); 
       }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -55,16 +70,17 @@ const Login = ({ onClose }) => {
       >
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
 
-        {error && <p className="text-red-500 mb-4">{error}</p>}
+        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
 
         <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
+          type="text"
+          name="emailOrPhone"
+          placeholder="Email or Phone"
+          value={formData.emailOrPhone}
           onChange={handleChange}
           className="w-full mb-4 px-4 py-2 border rounded"
           required
+          autoFocus
         />
 
         <input
@@ -79,7 +95,7 @@ const Login = ({ onClose }) => {
 
         <button
           type="submit"
-          className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+          className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded"
         >
           Login
         </button>
@@ -87,9 +103,9 @@ const Login = ({ onClose }) => {
         <p className="mt-4 text-center text-sm">
           Don&apos;t have an account?{" "}
           <span
-            className="text-green-600 hover:underline"
+            className="text-green-600 hover:underline cursor-pointer"
             onClick={() =>
-              setShowLogin((prev) => ({  login: false, signup: true }))
+              setShowLogin((prev) => ({ ...prev, login: false, signup: true }))
             }
           >
             Sign Up

@@ -5,7 +5,8 @@ import { FaUser, FaStore, FaSearch, FaBars, FaTimes } from "react-icons/fa";
 import WhatsAppButton from "./Whatsapp";
 import Fuse from "fuse.js";
 import dummyCards from "../Data.jsx";
-
+import Login from "../pages/Login.jsx"
+import Signup from "../pages/Signup.jsx"
 // Fuse.js config
 const fuse = new Fuse(dummyCards, {
   includeScore: true,
@@ -254,6 +255,14 @@ function Header() {
           </div>
         </>
       )}
+       {/* Modals */}
+      {showLogin.login && (
+        <Login onClose={() => setShowLogin({ login: false, signup: false })} />
+      )}
+      {showLogin.signup && (
+        <Signup onClose={() => setShowLogin({ login: false, signup: false })} />
+      )}
+
 
       <WhatsAppButton />
     </header>
